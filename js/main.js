@@ -27,24 +27,55 @@ $(document).ready(function(){
         return kmlParser
     }
 
-    //Appends locations to list
+    //Appends locations to list and set listeners for markers
     function listLocations(doc){
         globalDoc = doc
 
         console.log(globalDoc)
         //Assume only one doc for now
+        //Assume placemarks and markers are synchronizes (it is for geoxml3)
         var placemarks = doc[0].placemarks
+        var markers = doc[0].markers
 
         var locationsList = $('ul#locations')
         for(var i = 0; i < placemarks.length; i++){
             //For each placemark, list title and description free of inline styling
             var placemark = placemarks[i]
+            var marker = markers[i]
+
+            var markerID = makeID(marker.title)
+            console.log("Marker: " + markerID)
+
+            var m = marker
+
+            //Set marker to highlight each li onclick
+            google.maps.event.addListener(m, 'click', function(){
+                var markerID = makeID(this.title)
+                
+                //Remove selector class from other li
+                $('ul#locations li').removeClass('selected')
+
+                //Add selector class to li
+                $('li#' + markerID).addClass('selected')
+
+            })
+
+            //Remove inline styling from placemark description
             var cleanDescriptions = removeStyle($('<span class="loc-desc">' + placemark.description + '</span>'))
+            
+            //Create li element with title and description as contents
             $(locationsList).append(
-                $('<li>').append($('<strong class="title">').append(placemark.name)).append(cleanDescriptions))
+                $('<li>').append($('<strong class="title">').append(placemark.name)).append(cleanDescriptions)
+                    .attr('id', markerID))
+
         }
 
         setLocationListOnlick()
+    }
+
+    //Formats text to be suitable for id use
+    function makeID(text){
+        return text.replace(/[,;\s()]/g, "-")
     }
 
     //Removes inline styling, breaks and non-breaking spaces, and removes <font> tags

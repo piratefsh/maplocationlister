@@ -96,6 +96,8 @@ div#sidebar {
         font-size: 0.6em; }
         div#sidebar ul#locations li span.loc-desc a {
           display: block; }
+      div#sidebar ul#locations li.selected {
+        background-color: #ad3611; }
 
 footer {
   box-shadow: 0px 0px 12px #160703;
