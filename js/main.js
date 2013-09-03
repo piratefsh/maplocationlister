@@ -5,7 +5,7 @@ $(document).ready(function(){
     var kmlSrc = "js/chkl.kml"
     // var kmlSrc = "http://maps.google.com.my/maps/ms?ie=UTF8&authuser=0&msa=0&output=kml&msid=215254376920118074950.0004c7c0fe5b02177d447"
     
-    // Gets all placemarks on KML layer
+    var globalDoc
 
     // Callback to initialize GMaps with desired KML layer
     function initialize() {
@@ -27,22 +27,27 @@ $(document).ready(function(){
         return kmlParser
     }
 
+    //Appends locations to list
     function listLocations(doc){
+        globalDoc = doc
+
+        console.log(globalDoc)
         //Assume only one doc for now
         var placemarks = doc[0].placemarks
 
         var locationsList = $('ul#locations')
         for(var i = 0; i < placemarks.length; i++){
+            //For each placemark, list title and description free of inline styling
             var placemark = placemarks[i]
-
             var cleanDescriptions = removeStyle($('<span class="loc-desc">' + placemark.description + '</span>'))
-
-            //removeStyle($('<div><span style="font-size:small; color: red">Opening Hours:</span></div>'))
             $(locationsList).append(
-                $('<li>').append($('<strong>').append(placemark.name)).append(cleanDescriptions))
+                $('<li>').append($('<strong class="title">').append(placemark.name)).append(cleanDescriptions))
         }
+
+        setLocationListOnlick()
     }
 
+    //Removes inline styling, breaks and non-breaking spaces, and removes <font> tags
     function removeStyle(element){
         var descendents = $(element).find('*')
         descendents.add($(element))
@@ -65,8 +70,24 @@ $(document).ready(function(){
         return $('<span>').append($(this).contents())
     }
 
+    // Make each location <li> clickable to pop up corresponding marker info window
+    function setLocationListOnlick(){
+        $("ul#locations li").click(function(e){
+            var markerTitle = $('.title', $(this)).html()
+
+            console.log("Finding marker for: " + markerTitle)
+
+            //Find corresponding marker
+            for(var i = 0; i < globalDoc[0].markers.length; i++){
+                var currMarker = globalDoc[0].markers[i]
+
+                //Open info window for corresponding marker    
+                if(currMarker.title == markerTitle){
+                    google.maps.event.trigger(currMarker, 'click')
+                }
+            }
+        })
+    }
+
     google.maps.event.addDomListener(window, 'load', initialize);
-
-    
-
 })
