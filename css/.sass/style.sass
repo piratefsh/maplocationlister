@@ -13,11 +13,12 @@ $dark-brown: #160703
 
 // Proportions
 $wrapper-width: 700px
+$sidebar-width: 30%
 $logo-size: 400px
 $sponsor_width: 100px
 
 // Font families
-$body-font: Champagne, Helvetica, Arial, sans-serif
+$body-font: 'Century Gothic', Helvetica, Arial, sans-serif
 // Custom Fonts
 @font-face
     font-family: 'Matchbook'
@@ -90,11 +91,16 @@ p
 
 //Google Map styling
 div 
+    &#maincontent 
+        float: left
+        width: 100% - $sidebar-width - 3%
+    
     &#map-canvas
         @include dark-shadow
+        width: 90%
+        float: right
         margin: 0 auto
         height: 500px
-        width: 90%
         background-color: $brown
         padding: $space
 
@@ -106,6 +112,23 @@ div
             padding: 0
             margin: 0
 
+
+div#sidebar
+    width: $sidebar-width
+    float: right
+    ul#locations
+        list-style: none
+        padding: 0
+        margin: 0
+        li 
+            border-bottom: solid 1px darken($orange, 10%)
+            font-size: 0.8em
+            padding: $space / 2
+            span.loc-desc
+                display: block
+                font-size: 0.6em
+                a
+                    display: block
 footer
     @include dark-shadow
     background-color: $brown

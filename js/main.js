@@ -35,7 +35,7 @@ $(document).ready(function(){
         for(var i = 0; i < placemarks.length; i++){
             var placemark = placemarks[i]
 
-            var cleanDescriptions = removeStyle($('<span>' + placemark.description + '</div>'))
+            var cleanDescriptions = removeStyle($('<span class="loc-desc">' + placemark.description + '</span>'))
 
             //removeStyle($('<div><span style="font-size:small; color: red">Opening Hours:</span></div>'))
             $(locationsList).append(
@@ -44,24 +44,29 @@ $(document).ready(function(){
     }
 
     function removeStyle(element){
-        console.log(element)
         var descendents = $(element).find('*')
         descendents.add($(element))
+
+        //Remove inline styles and dir attributes
         descendents.removeAttr('style').removeAttr('dir')
         
         //Remove all <br>
-        descendents.find('br').replaceWith(null)
+        $(element).find('br').replaceWith(null)
 
         //Remove all <font>
-        descendents.find('font').replaceWith(function(){
-            return $(this).contents()
-        })
+        $(element).find('font').replaceWith(replaceElementTagWithSpan)
 
-        return $(element)
+        //Remove all &nbsp;
+        return $(element)[0].outerHTML.replace("&nbsp;", "")
+    }
+
+    // Callback for replaceWith for fonts
+    var replaceElementTagWithSpan =  function(){
+        return $('<span>').append($(this).contents())
     }
 
     google.maps.event.addDomListener(window, 'load', initialize);
 
-    removeStyle($('ul#test-list'))
+    
 
 })
