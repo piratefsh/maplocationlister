@@ -4,6 +4,10 @@ $(document).ready(function(){
     //################################################ GLOBAL VARS ###################################################
     var globalDoc   //Doc returned by geoXML parser with kml JSON. Check documentation for details.
     var gmap        //Google Map in use
+    var cafes = []
+    cafes['participatingKV'] = new Array()
+    cafes['notParticipatingKV'] = new Array()
+    cafes['notInKV'] = new Array()
 
 
 
@@ -27,22 +31,28 @@ $(document).ready(function(){
             {   map: gmap,
                 zoom: "false",
                 singleInfoWindow: true,
-                afterParse: listLocations
+                afterParse: parserCallback
             })  
 
         kmlParser.parse(kmlSrc)
         return kmlParser
     }
 
-    //Append locations to list from geoXML3 doc and set listeners for markers
-    function listLocations(doc){
+    function parserCallback(doc){
+        listLocations(doc)
+        prepGmaps()
+    }
+
+    function prepGmaps(){
         //Add listener, sometimes zoom is set before map is done loading
         google.maps.event.addListenerOnce(gmap, 'bounds_changed', function() {
             gmap.setCenter(new google.maps.LatLng(3.136402, 101.66394))
             gmap.setZoom(11);
 
         });
-
+    }
+    //Append locations to list from geoXML3 doc and set listeners for markers
+    function listLocations(doc){
         globalDoc = doc
 
         //Assume only one doc for now
@@ -79,18 +89,26 @@ $(document).ready(function(){
 
             var m = marker
             
-            //Replace markers
+            //Customize icons based on existing color of icon from before
+            // and sort into cafes map
+            //Green : Participating cafe
+            //Purple: Outside of KlangValley
+            //Default: In Klang Valley but not participating
 
-            var iconURL = chklBaseUrl + 'maplocationlister/img/map-icons/chkl-pin-01.png'
+            var iconURL = chklBaseUrl + 'maplocationlister/img/map-icons/chkl-pin-02.png'
 
 
             if(m && m.getIcon()){
                 if(m.getIcon().url.indexOf("purple") > -1){
+                   cafes["notInKV"].push(markerID)
                     iconURL = chklBaseUrl + 'maplocationlister/img/map-icons/chkl-pin-03.png'
                 }
                 else if(m.getIcon().url.indexOf("green") > -1){
-                    console.log('part')
-                    iconURL = chklBaseUrl + 'maplocationlister/img/map-icons/chkl-pin-02.png'
+                    cafes["participatingKV"].push(markerID)
+                    iconURL = chklBaseUrl + 'maplocationlister/img/map-icons/chkl-pin-01.png'
+                }
+                else{
+                    cafes["notParticipatingKV"].push(markerID)
                 }
             }
 
@@ -203,6 +221,10 @@ $(document).ready(function(){
         $('span.loc-desc', $(locationsListSelector)).hide()
     }
 
+    //Display number of each type of cafe
+    function showCafeCount(){
+        console.log(cafes.participatingKV)
+    }
 
 
     //################################################ FORMATTING FUNCTIONS ###############################################
