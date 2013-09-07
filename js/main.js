@@ -1,14 +1,17 @@
 
 $(document).ready(function(){
-    var globalDoc
-    var gmap
+    //################################################ GLOBAL VARS ###################################################
+    var globalDoc   //Doc returned by geoXML parser with kml JSON. Check documentation for details.
+    var gmap        //Google Map in use
 
+
+    //################################################ INITIALIZERS ###################################################
     function initializeListScroller(){
         //Set plugin scrollbar
         $(divWithLocationsListSelector).height('400px').mCustomScrollbar({theme: 'dark-thick'})
     }
 
-    // Callback to initialize GMaps with desired KML layer
+    // Callback to initialize GMaps with geoXML3
     function initialize() {
         var mapOptions = {
           zoom: 10,
@@ -28,7 +31,7 @@ $(document).ready(function(){
         return kmlParser
     }
 
-    //Appends locations to list and set listeners for markers
+    //Append locations to list from geoXML3 doc and set listeners for markers
     function listLocations(doc){
         globalDoc = doc
 
@@ -66,7 +69,7 @@ $(document).ready(function(){
 
             var m = marker
 
-            //Set marker to highlight each li onclick
+            //Set marker listener to highlight each li onclick
             google.maps.event.addListener(m, 'click', function(){
                 var markerID = makeID(this.title)
 
@@ -78,14 +81,13 @@ $(document).ready(function(){
                 var thisLi = $('li#' + markerID)
                 thisLi.addClass('selected')
 
-                $('span.loc-desc', allLis).hide()
-                showDetails(thisLi, marker)
+                //Collapse all other location desc and only show desc for current li
+                collapseLocationListDesc()
+                showDetails(thisLi, this)
 
-                //zoom to location and center it
-
-                //have to set center first, for first time click
-                //otherwise it'll zoom in some random position even though getPosition() returns right latlng
-                //bug
+                //Zoom to location and center it
+                //have to set center first, for first time click otherwise it'll zoom in some random position even though getPosition() returns 
+                //correct latlng values. Some bug.
                 gmap.setCenter(this.getPosition())
                 gmap.setZoom(15)
                 gmap.setCenter(this.getPosition())
@@ -96,68 +98,16 @@ $(document).ready(function(){
             })
         }
 
+        //Other locations list initializers
         setLocationListOnlick()
         initializeListScroller()
-        collapseList()
-    }
-
-    function collapseList(){
-        $('span.loc-desc', $(locationsListSelector)).hide()
-    }
-
-    function showDetails(obj, marker){
-        showAddress(obj, marker)
-        var animationTime = 300
-        $("span.loc-desc", obj).show(animationTime, "linear")
-
-    }
-
-    function showAddress(obj, marker){
-        var addressSpanSelector = "span.loc-desc span.address"
-        var addressSpan = $(addressSpanSelector, $(obj))
-
-        //if span for address doesn't already exist
-        if(addressSpan == null || addressSpan.size() < 1){
-            var newSpan = $("<span>").attr('class', 'address')
-            $("span.loc-desc", $(obj)).prepend(newSpan)
-            addressSpan = newSpan
-        }
-        //if address isn't already there
-        if(addressSpan.html() == ""){
-            getAddress(marker.getPosition(), addressSpan)
-        }
-    }
-
-    //Formats text to be suitable for id use
-    function makeID(text){
-        return text.replace(/[,;\s()\&+,\.]/g, "")
-    }
-
-    //Removes inline styling, breaks and non-breaking spaces, and removes <font> tags
-    function removeStyle(element){
-        var descendents = $(element).find('*')
-        descendents.add($(element))
-
-        //Remove inline styles and dir attributes
-        descendents.removeAttr('style').removeAttr('dir')
-        
-        //Remove all <br>
-        $(element).find('br').replaceWith(null)
-
-        //Remove all <font>
-        $(element).find('font').replaceWith(replaceElementTagWithSpan)
-
-        //Remove all &nbsp;
-        return $(element)[0].outerHTML.replace("&nbsp;", "")
-    }
-
-    // Callback for replaceWith for fonts
-    var replaceElementTagWithSpan =  function(){
-        return $('<span>').append($(this).contents())
+        collapseLocationListDesc()
     }
 
 
-    // Make each location <li> clickable to pop up corresponding marker info window
+    //####################################### MARKER/LOCATION LI ONLCLICK FUNCTIONS //#######################################
+
+     // Make each location <li> clickable to pop up corresponding marker info window
     function setLocationListOnlick(){
         $("ul#locations li").click(function(e){
             var markerTitle = $('.title', this).attr('id')
@@ -188,5 +138,73 @@ $(document).ready(function(){
         })
     }
 
+    //Show location descriptions for location li
+    function showDetails(obj, marker){
+        getAndInsertAddress(obj, marker)
+        var animationTime = 300
+        var spanToShow = $("span.loc-desc", obj)
+
+        if(spanToShow.css("display").trim() == "none"){
+            spanToShow.show(animationTime, "linear")
+        }
+
+    }
+
+    //Get address and insert it to obj
+    function getAndInsertAddress(obj, marker){
+        var addressSpanSelector = "span.loc-desc span.address"
+        var addressSpan = $(addressSpanSelector, $(obj))
+
+        //if span for address doesn't already exist
+        if(addressSpan == null || addressSpan.size() < 1){
+            var newSpan = $("<span>").attr('class', 'address')
+            $("span.loc-desc", $(obj)).prepend(newSpan)
+            addressSpan = newSpan
+        }
+        //if address isn't already there
+        if(addressSpan.html() == ""){
+            getAddress(marker.getPosition(), addressSpan)
+        }
+    }
+
+    //Collapse all location descriptions for location li
+    function collapseLocationListDesc(){
+        $('span.loc-desc', $(locationsListSelector)).hide()
+    }
+
+
+    //################################################ FORMATTING FUNCTIONS ###############################################
+    
+    //Formats text to be suitable for id use
+    function makeID(text){
+        //removes funky symbols so ids are only alphanumeric
+        return text.replace(/[\W]/g, "")
+    }
+
+    //Removes inline styling, breaks and non-breaking spaces, and removes <font> tags
+    function removeStyle(element){
+        var descendents = $(element).find('*')
+        descendents.add($(element))
+
+        //Remove inline styles and dir attributes
+        descendents.removeAttr('style').removeAttr('dir')
+        
+        //Remove all <br>
+        $(element).find('br').replaceWith(null)
+
+        //Remove all <font>
+        $(element).find('font').replaceWith(replaceElementTagWithSpan)
+
+        //Remove all &nbsp;
+        return $(element)[0].outerHTML.replace("&nbsp;", "")
+    }
+
+    // Callback for replaceWith for fonts
+    var replaceElementTagWithSpan =  function(){
+        return $('<span>').append($(this).contents())
+    }
+
+
+    //###################################################### RUN CODE #####################################################
     google.maps.event.addDomListener(window, 'load', initialize);
-})
+}

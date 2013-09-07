@@ -137,9 +137,7 @@ div
 div#sidebar
     width: 100%
     div#locations-list
-        @include rounded-corners($space/2)
         ul#locations
-            @include rounded-corners($space/2)
             list-style: none
             padding: 0
             margin: 0
@@ -149,9 +147,6 @@ div#sidebar
                 border-bottom: solid 1px darken($orange, 10%)
                 font-size: 1em
                 padding: $space 
-
-                &:first-child, &:last-child
-                    @include rounded-corners($space/2)
                 
                 .title
                     @include text-shadow($red)
@@ -173,7 +168,9 @@ div#sidebar
     //List search input
     div#search-bar-wrapper
         width: 100%
-        input#search-bar
+        input
+            &#search-bar
+            font-family: $body-font
             width: 100%
             @include rounded-corners($space/2)
             margin: 
@@ -183,6 +180,10 @@ div#sidebar
             border: none
             background-color: $light-orange
             color: $dark-orange
+
+            &:hover, &:focus
+                box-shadow: none
+                border: none
 
 
 
