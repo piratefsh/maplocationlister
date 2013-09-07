@@ -1,6 +1,4 @@
 $(document).ready(function(){
-    var searchBarSelector = "input#search-bar"
-    var listToSearchSelector = "ul#locations"
 
     $(searchBarSelector).keyup(function(){
 
@@ -15,6 +13,9 @@ $(document).ready(function(){
         else{
             $(listToSearchSelector + " li").show()    
         }
+
+        //Scroll to top
+        $(divWithLocationsListSelector).mCustomScrollbar("scrollTo", "top")
     })
 
 

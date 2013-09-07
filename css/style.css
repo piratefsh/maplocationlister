@@ -112,7 +112,7 @@ div#sidebar {
           display: block; }
           div#sidebar div#locations-list ul#locations li span.loc-desc {
             display: block;
-            font-size: 0.6em; }
+            font-size: 0.8em; }
             div#sidebar div#locations-list ul#locations li span.loc-desc a {
               display: inline-block;
               width: auto; }

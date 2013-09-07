@@ -1,16 +1,6 @@
 
 $(document).ready(function(){
-    //Google Maps
-    var APIkey = "AIzaSyBSPJm_l1q0JWgK6ZhJNzjwmQ4-pFJxkzc"
-    // var kmlSrc = "http://cafehopkl.com/maplocationlister/js/chkl.kml"
-    var kmlSrc = "js/chkl.kml"
-    // var kmlSrc = "http://maps.google.com.my/maps/ms?ie=UTF8&authuser=0&msa=0&output=kml&msid=215254376920118074950.0004c7c0fe5b02177d447"
-    
     var globalDoc
-
-    var locationsListSelector = 'ul#locations'
-    var divWithLocationsListSelector = 'div#locations-list'
-
 
     function initializeListScroller(){
         //Set plugin scrollbar
@@ -65,6 +55,14 @@ $(document).ready(function(){
             var markerID = makeID(marker.title)
             // console.log("Marker: " + markerID)
 
+             //Remove inline styling from placemark description
+            var cleanDescriptions = removeStyle($('<span class="loc-desc">' + placemark.description + '</span>'))
+            //Create li element with title and description as contents
+            
+            var liElement = $('<li>').append($('<strong class="title">').attr('id', markerID).append(placemark.name)).append(cleanDescriptions).attr('id', markerID)
+            $(locationsList).append(liElement)
+
+
             var m = marker
 
             //Set marker to highlight each li onclick
@@ -72,24 +70,49 @@ $(document).ready(function(){
                 var markerID = makeID(this.title)
 
                 //Remove selector class from other li
-                $('ul#locations li').removeClass('selected')
+                var allLis = $('ul#locations li')
+                allLis.removeClass('selected')
 
                 //Add selector class to li
-                $('li#' + markerID).addClass('selected')
+                var thisLi = $('li#' + markerID)
+                thisLi.addClass('selected')
+
+                $('span.loc-desc', allLis).hide()
+                showDetails(thisLi, marker)
 
             })
-
-            //Remove inline styling from placemark description
-            var cleanDescriptions = removeStyle($('<span class="loc-desc">' + placemark.description + '</span>'))
-            //Create li element with title and description as contents
-            $(locationsList).append(
-                $('<li>').append($('<strong class="title">').attr('id', markerID).append(placemark.name)).append(cleanDescriptions).attr('id', markerID))
         }
 
         setLocationListOnlick()
-
         initializeListScroller()
+        collapseList()
+    }
 
+    function collapseList(){
+        $('span.loc-desc', $(locationsListSelector)).hide()
+    }
+
+    function showDetails(obj, marker){
+        showAddress(obj, marker)
+        var animationTime = 300
+        $("span.loc-desc", obj).show(animationTime, "linear")
+
+    }
+
+    function showAddress(obj, marker){
+        var addressSpanSelector = "span.loc-desc span.address"
+        var addressSpan = $(addressSpanSelector, $(obj))
+
+        //if span for address doesn't already exist
+        if(addressSpan == null || addressSpan.size() < 1){
+            var newSpan = $("<span>").attr('class', 'address')
+            $("span.loc-desc", $(obj)).prepend(newSpan)
+            addressSpan = newSpan
+        }
+        //if address isn't already there
+        if(addressSpan.html() == ""){
+            getAddress(marker.getPosition(), addressSpan)
+        }
     }
 
     //Formats text to be suitable for id use
@@ -120,6 +143,7 @@ $(document).ready(function(){
         return $('<span>').append($(this).contents())
     }
 
+
     // Make each location <li> clickable to pop up corresponding marker info window
     function setLocationListOnlick(){
         $("ul#locations li").click(function(e){
@@ -135,17 +159,6 @@ $(document).ready(function(){
                     break
                 }
             }
-            var addressSpanSelector = "span.loc-desc span.address"
-            var addressSpan = $(addressSpanSelector, this)
-
-            //if span for address doesn't already exist
-            if(addressSpan == null || addressSpan.size() < 1){
-                var newSpan = $("<span>").attr('class', 'address')
-                $("span.loc-desc", this).prepend(newSpan)
-                addressSpan = newSpan
-            }
-
-            getAddress(currMarker.getPosition(), addressSpan)
         })
     }
 
