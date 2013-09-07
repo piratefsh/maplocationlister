@@ -17,9 +17,8 @@ body {
   font-size: 1.4em; }
 
 div#wrapper {
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 24px; }
+  max-width: 1000px;
+  margin: 0 auto; }
 
 div.clear-both {
   clear: both; }
@@ -66,13 +65,12 @@ p {
 
 div#maincontent {
   float: left;
-  width: 67%; }
+  width: 100%; }
 div#map-canvas {
   box-shadow: 0px 0px 12px #160703;
   width: 100%;
-  float: right;
-  margin: 0 auto;
-  height: 500px;
+  margin: 0 auto 12px auto;
+  height: 300px;
   background-color: #412218;
   color: #412218;
   font-family: "Century Gothic", Helvetica, Arial, sans-serif; }
@@ -83,16 +81,17 @@ div#map-canvas {
     margin: 0; }
 
 div#sidebar {
-  width: 30%;
-  float: right; }
+  width: 100%; }
   div#sidebar div#locations-list {
-    width: 100%; }
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    border-radius: 6px; }
     div#sidebar div#locations-list ul#locations {
       -moz-border-radius: 6px;
       -webkit-border-radius: 6px;
       -khtml-border-radius: 6px;
       border-radius: 6px;
-      box-shadow: inset 0 0 4px #c53d13;
       list-style: none;
       padding: 0;
       margin: 0;
@@ -115,7 +114,8 @@ div#sidebar {
             display: block;
             font-size: 0.6em; }
             div#sidebar div#locations-list ul#locations li span.loc-desc a {
-              display: block; }
+              display: inline-block;
+              width: auto; }
             div#sidebar div#locations-list ul#locations li span.loc-desc span.address {
               font-style: italic;
               margin-bottom: 6px; }
@@ -130,18 +130,19 @@ div#sidebar {
     margin-bottom: 12px;
     padding: 6px;
     font-size: 0.8em;
-    width: 95%;
+    width: 988px;
     border: none;
     background-color: #facc88;
     color: #b15c41; }
 
 footer {
   box-shadow: 0px 0px 12px #160703;
+  clear: both;
   background-color: #412218;
   background-image: url("../img/header_bg.jpg");
   padding: 12px; }
   footer div#sponsors {
-    max-width: 700px;
+    max-width: 1000px;
     margin: 0 auto; }
     footer div#sponsors ul#sponsor_list {
       width: 100%;
@@ -185,6 +186,3 @@ footer {
 
 .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
   background: #facc88 !important; }
-
-.mCSB_container {
-  margin-right: 7px; }

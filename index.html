@@ -22,27 +22,25 @@
         <title>Location Lister</title>
     </head>
     <body>
-        <!-- The Map -->
-        <div id="maincontent">
-            <h2>The Map </h2>
-            <div id="map-canvas"></div>
-        </div>
-
-        <!-- The List -->
-        <div id="sidebar">
-            <h2>The List</h2>
-            <input type="text" id="search-bar" placeholder="Search Cafes"/>
-            <div id="locations-list">
-                <ul name="list" id="locations"></ul>
+        <div id="wrapper">
+            <!-- The Map -->
+            <div id="maincontent">
+                <h2>The Map</h2>
+                <div id="map-canvas"></div>
             </div>
+
+            <!-- The List -->
+            <div id="sidebar">
+                <input type="text" id="search-bar" placeholder="Search Cafes"/>
+                <div id="locations-list">
+                    <ul name="list" id="locations"></ul>
+                </div>
+            </div>
+
+            <div class="clear-both"></div>
         </div>
 
-        <!-- Div to clear for footer -->
-        <div class="clear-both"></div>
-
-        <footer>
-            <p>Created by Sher Minn Chong</p>
-        </footer>
+        <footer><p>Sher Minn Chong</p></footer>
 
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.3.min.js"><\/script>')</script>

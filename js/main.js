@@ -14,13 +14,13 @@ $(document).ready(function(){
 
     function initializeListScroller(){
         //Set plugin scrollbar
-        $(divWithLocationsListSelector).height('500px').mCustomScrollbar({theme: 'dark-thick'})
+        $(divWithLocationsListSelector).height('400px').mCustomScrollbar({theme: 'dark-thick'})
     }
 
     // Callback to initialize GMaps with desired KML layer
     function initialize() {
         var mapOptions = {
-          zoom: 1,
+          zoom: 10,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
   
