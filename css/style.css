@@ -129,6 +129,7 @@ div#sidebar {
     border-radius: 6px;
     margin-bottom: 12px;
     padding: 6px;
+    font-size: 0.8em;
     width: 95%;
     border: none;
     background-color: #facc88;
@@ -173,6 +174,9 @@ footer {
 @media screen and (max-width: 700px) {
   ul#sponsor_list {
     display: block; } }
+::-webkit-input-placeholder, :-moz-placeholder, ::-moz-placeholder, :-ms-input-placeholder {
+  color: #ec6338; }
+
 .mCSB_scrollTools .mCSB_draggerRail {
   background-color: #c53d13 !important; }
 
