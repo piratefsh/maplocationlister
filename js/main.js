@@ -1,8 +1,10 @@
 
 $(document).ready(function(){
+
     //################################################ GLOBAL VARS ###################################################
     var globalDoc   //Doc returned by geoXML parser with kml JSON. Check documentation for details.
     var gmap        //Google Map in use
+
 
 
     //################################################ INITIALIZERS ###################################################
@@ -105,6 +107,7 @@ $(document).ready(function(){
     }
 
 
+
     //####################################### MARKER/LOCATION LI ONLCLICK FUNCTIONS //#######################################
 
      // Make each location <li> clickable to pop up corresponding marker info window
@@ -173,6 +176,7 @@ $(document).ready(function(){
     }
 
 
+
     //################################################ FORMATTING FUNCTIONS ###############################################
     
     //Formats text to be suitable for id use
@@ -205,6 +209,7 @@ $(document).ready(function(){
     }
 
 
+
     //###################################################### RUN CODE #####################################################
     google.maps.event.addDomListener(window, 'load', initialize);
-}
+})
