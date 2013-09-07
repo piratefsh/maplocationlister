@@ -8,6 +8,15 @@ $(document).ready(function(){
     
     var globalDoc
 
+    var locationsListSelector = 'ul#locations'
+    var divWithLocationsListSelector = 'div#locations-list'
+
+
+    function initializeListScroller(){
+        //Set plugin scrollbar
+        $(divWithLocationsListSelector).height('500px').mCustomScrollbar({theme: 'dark-thick'})
+    }
+
     // Callback to initialize GMaps with desired KML layer
     function initialize() {
         var mapOptions = {
@@ -47,7 +56,7 @@ $(document).ready(function(){
         })
 
         //Add location details to location ul
-        var locationsList = $('ul#locations')
+        var locationsList = $(locationsListSelector)
         for(var i = 0; i < placemarks.length; i++){
             //For each placemark, list title and description free of inline styling
             var placemark = placemarks[i]
@@ -74,15 +83,18 @@ $(document).ready(function(){
             var cleanDescriptions = removeStyle($('<span class="loc-desc">' + placemark.description + '</span>'))
             //Create li element with title and description as contents
             $(locationsList).append(
-                $('<li>').append($('<strong class="title">').attr('id', markerID).append(placemark.name)).append(cleanDescriptions))
+                $('<li>').append($('<strong class="title">').attr('id', markerID).append(placemark.name)).append(cleanDescriptions).attr('id', markerID))
         }
 
         setLocationListOnlick()
+
+        initializeListScroller()
+
     }
 
     //Formats text to be suitable for id use
     function makeID(text){
-        return text.replace(/[,;\s()\&]/g, "")
+        return text.replace(/[,;\s()\&+,\.]/g, "")
     }
 
     //Removes inline styling, breaks and non-breaking spaces, and removes <font> tags
@@ -123,15 +135,14 @@ $(document).ready(function(){
                     break
                 }
             }
-
-            var addressSpan = $("span.address", this)
+            var addressSpanSelector = "span.loc-desc span.address"
+            var addressSpan = $(addressSpanSelector, this)
 
             //if span for address doesn't already exist
             if(addressSpan == null || addressSpan.size() < 1){
                 var newSpan = $("<span>").attr('class', 'address')
-                $(this).append(newSpan)
-                addressSpan = $("span.address", this)
-
+                $("span.loc-desc", this).prepend(newSpan)
+                addressSpan = newSpan
             }
 
             getAddress(currMarker.getPosition(), addressSpan)
@@ -146,7 +157,7 @@ $(document).ready(function(){
         }
 
         geocoder.geocode(geocoderRequest, function(results, status){
-            $(resultContainer).html(results[0].formatted_address)
+            $(resultContainer).html("Address: " + results[0].formatted_address)
 
         })
     }

@@ -19,7 +19,7 @@ body {
 div#wrapper {
   max-width: 700px;
   margin: 0 auto;
-  padding: 12px; }
+  padding: 24px; }
 
 div.clear-both {
   clear: both; }
@@ -85,24 +85,54 @@ div#map-canvas {
 div#sidebar {
   width: 30%;
   float: right; }
-  div#sidebar ul#locations {
-    box-shadow: inset 0 6px 12px -10px #160703;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    height: 500px;
-    overflow-y: scroll; }
-    div#sidebar ul#locations li {
-      border-bottom: solid 1px #dc4515;
-      font-size: 0.8em;
-      padding: 6px; }
-      div#sidebar ul#locations li span.loc-desc {
-        display: block;
-        font-size: 0.6em; }
-        div#sidebar ul#locations li span.loc-desc a {
+  div#sidebar div#locations-list {
+    width: 100%; }
+    div#sidebar div#locations-list ul#locations {
+      -moz-border-radius: 6px;
+      -webkit-border-radius: 6px;
+      -khtml-border-radius: 6px;
+      border-radius: 6px;
+      box-shadow: inset 0 0 4px #c53d13;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      overflow: visible; }
+      div#sidebar div#locations-list ul#locations li {
+        border-bottom: solid 1px #dc4515;
+        font-size: 0.8em;
+        padding: 12px; }
+        div#sidebar div#locations-list ul#locations li:first-child, div#sidebar div#locations-list ul#locations li:last-child {
+          -moz-border-radius: 6px;
+          -webkit-border-radius: 6px;
+          -khtml-border-radius: 6px;
+          border-radius: 6px; }
+        div#sidebar div#locations-list ul#locations li .title {
+          text-shadow: #91110e 0 -1px 0; }
+        div#sidebar div#locations-list ul#locations li span {
           display: block; }
-      div#sidebar ul#locations li.selected {
-        background-color: #ad3611; }
+          div#sidebar div#locations-list ul#locations li span.loc-desc {
+            display: block;
+            font-size: 0.6em; }
+            div#sidebar div#locations-list ul#locations li span.loc-desc a {
+              display: block; }
+            div#sidebar div#locations-list ul#locations li span.loc-desc span.address {
+              font-style: italic;
+              margin-bottom: 6px; }
+        div#sidebar div#locations-list ul#locations li.selected {
+          background-color: #b15c41;
+          color: #fee9c6; }
+  div#sidebar input#search-bar {
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    padding: 6px;
+    width: 95%;
+    border: none;
+    background-color: #facc88;
+    color: #b15c41; }
 
 footer {
   box-shadow: 0px 0px 12px #160703;
@@ -143,3 +173,14 @@ footer {
 @media screen and (max-width: 700px) {
   ul#sponsor_list {
     display: block; } }
+.mCSB_scrollTools .mCSB_draggerRail {
+  background-color: #c53d13 !important; }
+
+.mCSB_scrollTools .mCSB_draggerRail {
+  background-color: #c53d13 !important; }
+
+.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+  background: #facc88 !important; }
+
+.mCSB_container {
+  margin-right: 7px; }
