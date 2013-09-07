@@ -13,7 +13,7 @@
 body {
   background-color: #ec6338;
   color: #fee9c6;
-  font-family: "Century Gothic", Helvetica, Arial, sans-serif;
+  font-family: "Champagne", Helvetica, Arial, sans-serif;
   font-size: 1.4em; }
 
 div#wrapper {
@@ -73,10 +73,10 @@ div#map-canvas {
   height: 300px;
   background-color: #412218;
   color: #412218;
-  font-family: "Century Gothic", Helvetica, Arial, sans-serif; }
+  font-family: "Champagne", Helvetica, Arial, sans-serif; }
   div#map-canvas h3 {
     text-shadow: none;
-    font-family: "Century Gothic", Helvetica, Arial, sans-serif;
+    font-family: "Champagne", Helvetica, Arial, sans-serif;
     padding: 0;
     margin: 0; }
 
@@ -99,7 +99,7 @@ div#sidebar {
       overflow: visible; }
       div#sidebar div#locations-list ul#locations li {
         border-bottom: solid 1px #dc4515;
-        font-size: 0.8em;
+        font-size: 1em;
         padding: 12px; }
         div#sidebar div#locations-list ul#locations li:first-child, div#sidebar div#locations-list ul#locations li:last-child {
           -moz-border-radius: 6px;
@@ -122,18 +122,20 @@ div#sidebar {
         div#sidebar div#locations-list ul#locations li.selected {
           background-color: #b15c41;
           color: #fee9c6; }
-  div#sidebar input#search-bar {
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    -khtml-border-radius: 6px;
-    border-radius: 6px;
-    margin-bottom: 12px;
-    padding: 6px;
-    font-size: 0.8em;
-    width: 988px;
-    border: none;
-    background-color: #facc88;
-    color: #b15c41; }
+  div#sidebar div#search-bar-wrapper {
+    width: 100%; }
+    div#sidebar div#search-bar-wrapper input#search-bar {
+      width: 100%;
+      -moz-border-radius: 6px;
+      -webkit-border-radius: 6px;
+      -khtml-border-radius: 6px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      padding: 6px;
+      font-size: 0.8em;
+      border: none;
+      background-color: #facc88;
+      color: #c53d13; }
 
 footer {
   box-shadow: 0px 0px 12px #160703;

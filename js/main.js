@@ -1,6 +1,7 @@
 
 $(document).ready(function(){
     var globalDoc
+    var gmap
 
     function initializeListScroller(){
         //Set plugin scrollbar
@@ -14,10 +15,10 @@ $(document).ready(function(){
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
   
-        var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions)
+        gmap = new google.maps.Map(document.getElementById("map-canvas"), mapOptions)
         
         var kmlParser = new geoXML3.parser(
-            {   map: map,
+            {   map: gmap,
                 singleInfoWindow: true,
                 afterParse: listLocations
             })  
@@ -79,6 +80,18 @@ $(document).ready(function(){
 
                 $('span.loc-desc', allLis).hide()
                 showDetails(thisLi, marker)
+
+                //zoom to location and center it
+
+                //have to set center first, for first time click
+                //otherwise it'll zoom in some random position even though getPosition() returns right latlng
+                //bug
+                gmap.setCenter(this.getPosition())
+                gmap.setZoom(15)
+                gmap.setCenter(this.getPosition())
+
+                //Scroll to selected position
+                $(divWithLocationsListSelector).mCustomScrollbar("scrollTo", "li#" + markerID)
 
             })
         }

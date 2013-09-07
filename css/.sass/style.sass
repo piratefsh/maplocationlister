@@ -21,7 +21,7 @@ $sponsor_width: 100px
 $map-height: 300px
 
 // Font families
-$body-font: 'Century Gothic', Helvetica, Arial, sans-serif
+$body-font: 'Champagne', Helvetica, Arial, sans-serif
 // Custom Fonts
 @font-face
     font-family: 'Matchbook'
@@ -147,7 +147,7 @@ div#sidebar
             overflow: visible
             li 
                 border-bottom: solid 1px darken($orange, 10%)
-                font-size: 0.8em
+                font-size: 1em
                 padding: $space 
 
                 &:first-child, &:last-child
@@ -170,16 +170,22 @@ div#sidebar
                 &.selected
                     background-color: $light-brown
                     color: $beige
-    input#search-bar
-        @include rounded-corners($space/2)
-        margin: 
-            bottom: $space 
-        padding: $space/2
-        font-size: 0.8em
-        width: $wrapper-width - $space
-        border: none
-        background-color: $light-orange
-        color: $light-brown
+    //List search input
+    div#search-bar-wrapper
+        width: 100%
+        input#search-bar
+            width: 100%
+            @include rounded-corners($space/2)
+            margin: 
+                bottom: $space 
+            padding: $space/2
+            font-size: 0.8em
+            border: none
+            background-color: $light-orange
+            color: $dark-orange
+
+
+
 footer
     @include dark-shadow
     clear: both
