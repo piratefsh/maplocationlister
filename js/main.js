@@ -5,11 +5,14 @@ $(document).ready(function(){
     var globalDoc   //Doc returned by geoXML parser with kml JSON. Check documentation for details.
     var gmap        //Google Map in use
     var cafes = []
-    cafes['participatingKV'] = new Array()
+    cafes['participatingKV']    = new Array()
     cafes['notParticipatingKV'] = new Array()
-    cafes['notInKV'] = new Array()
+    cafes['notInKV']            = new Array()
 
-
+    var markerIcons = []
+    markerIcons['outOfTown']       = chklBaseUrl + 'maplocationlister/img/map-icons/chkl-pin-01.png'
+    markerIcons['participating']   = chklBaseUrl + 'maplocationlister/img/map-icons/chkl-pin-03.png'
+    markerIcons['default']         = chklBaseUrl + 'maplocationlister/img/map-icons/chkl-pin-02.png'
 
     //################################################ INITIALIZERS ###################################################
     function initializeListScroller(){
@@ -95,17 +98,17 @@ $(document).ready(function(){
             //Purple: Outside of KlangValley
             //Default: In Klang Valley but not participating
 
-            var iconURL = chklBaseUrl + 'maplocationlister/img/map-icons/chkl-pin-02.png'
+            var iconURL = markerIcons['default']
 
 
             if(m && m.getIcon()){
                 if(m.getIcon().url.indexOf("purple") > -1){
                    cafes["notInKV"].push(markerID)
-                    iconURL = chklBaseUrl + 'maplocationlister/img/map-icons/chkl-pin-03.png'
+                    iconURL = markerIcons['outOfTown']
                 }
                 else if(m.getIcon().url.indexOf("green") > -1){
                     cafes["participatingKV"].push(markerID)
-                    iconURL = chklBaseUrl + 'maplocationlister/img/map-icons/chkl-pin-01.png'
+                    iconURL = markerIcons['participating']
                 }
                 else{
                     cafes["notParticipatingKV"].push(markerID)
