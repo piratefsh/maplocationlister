@@ -18,25 +18,31 @@ $(document).ready(function(){
     // Callback to initialize GMaps with geoXML3
     function initialize() {
         var mapOptions = {
-          zoom: 10,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
         };
-  
+        
         gmap = new google.maps.Map(document.getElementById("map-canvas"), mapOptions)
         
         var kmlParser = new geoXML3.parser(
             {   map: gmap,
+                zoom: "false",
                 singleInfoWindow: true,
                 afterParse: listLocations
             })  
 
         kmlParser.parse(kmlSrc)
-
         return kmlParser
     }
 
     //Append locations to list from geoXML3 doc and set listeners for markers
     function listLocations(doc){
+        //Add listener, sometimes zoom is set before map is done loading
+        google.maps.event.addListenerOnce(gmap, 'bounds_changed', function() {
+            gmap.setCenter(new google.maps.LatLng(3.136402, 101.66394))
+            gmap.setZoom(11);
+
+        });
+
         globalDoc = doc
 
         //Assume only one doc for now
@@ -72,6 +78,26 @@ $(document).ready(function(){
 
 
             var m = marker
+            
+            //Replace markers
+
+            var iconURL = chklBaseUrl + 'maplocationlister/img/map-icons/chkl-pin-01.png'
+
+
+            if(m && m.getIcon()){
+                if(m.getIcon().url.indexOf("purple") > -1){
+                    iconURL = chklBaseUrl + 'maplocationlister/img/map-icons/chkl-pin-03.png'
+                }
+                else if(m.getIcon().url.indexOf("green") > -1){
+                    console.log('part')
+                    iconURL = chklBaseUrl + 'maplocationlister/img/map-icons/chkl-pin-02.png'
+                }
+            }
+
+            //Set custom marker
+            m.setIcon({
+                url: iconURL
+            })
 
             //Set marker listener to highlight each li onclick
             google.maps.event.addListener(m, 'click', function(){
@@ -196,7 +222,7 @@ $(document).ready(function(){
         descendents.removeAttr('style').removeAttr('dir')
         
         //Remove all <br>
-        $(element).find('br').replaceWith(null)
+        // $(element).find('br').replaceWith(null)
 
         //Remove all <font>
         $(element).find('font').replaceWith(replaceElementTagWithSpan)
