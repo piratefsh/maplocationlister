@@ -64,12 +64,12 @@ p {
     text-align: center; }
 
 div#maincontent {
-  float: left;
-  width: 100%; }
+  width: 95%;
+  margin: 0 auto; }
 div#map-canvas {
   box-shadow: 0px 0px 12px #160703;
   width: 100%;
-  margin: 0 auto 12px auto;
+  margin: 0 auto;
   height: 300px;
   background-color: #412218;
   color: #412218;
@@ -80,52 +80,60 @@ div#map-canvas {
     padding: 0;
     margin: 0; }
 
-div#sidebar {
+div#locations-list-wrapper {
   width: 100%; }
-  div#sidebar div#locations-list ul#locations {
+  div#locations-list-wrapper div#locations-list ul#locations {
     list-style: none;
     padding: 0;
     margin: 0;
     width: 100%;
     overflow: visible; }
-    div#sidebar div#locations-list ul#locations li {
+    div#locations-list-wrapper div#locations-list ul#locations li {
       border-bottom: solid 1px #dc4515;
       font-size: 1em;
       padding: 12px; }
-      div#sidebar div#locations-list ul#locations li .title {
+      div#locations-list-wrapper div#locations-list ul#locations li .title {
         text-shadow: #91110e 0 -1px 0; }
-      div#sidebar div#locations-list ul#locations li span {
+      div#locations-list-wrapper div#locations-list ul#locations li span {
         display: block; }
-        div#sidebar div#locations-list ul#locations li span.loc-desc {
+        div#locations-list-wrapper div#locations-list ul#locations li span.loc-desc {
           display: block;
           font-size: 0.8em; }
-          div#sidebar div#locations-list ul#locations li span.loc-desc a {
+          div#locations-list-wrapper div#locations-list ul#locations li span.loc-desc a {
             display: inline-block;
             width: auto; }
-          div#sidebar div#locations-list ul#locations li span.loc-desc span.address {
+          div#locations-list-wrapper div#locations-list ul#locations li span.loc-desc span.address {
             font-style: italic;
             margin-bottom: 6px; }
-      div#sidebar div#locations-list ul#locations li.selected {
+      div#locations-list-wrapper div#locations-list ul#locations li.selected {
         background-color: #b15c41;
         color: #fee9c6; }
-  div#sidebar div#search-bar-wrapper {
-    width: 100%; }
-    div#sidebar div#search-bar-wrapper input {
-      font-family: "Champagne", Helvetica, Arial, sans-serif;
+  div#locations-list-wrapper div#search-bar-wrapper {
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 6px;
+    width: 100%;
+    margin: 12px auto;
+    background-color: #facc88;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; }
+    div#locations-list-wrapper div#search-bar-wrapper input#search-bar {
       width: 100%;
-      -moz-border-radius: 6px;
-      -webkit-border-radius: 6px;
-      -khtml-border-radius: 6px;
-      border-radius: 6px;
-      margin-bottom: 12px;
-      padding: 6px;
-      font-size: 0.8em;
       border: none;
+      margin: 0 auto;
       background-color: #facc88;
-      color: #c53d13; }
-      div#sidebar div#search-bar-wrapper input:hover, div#sidebar div#search-bar-wrapper input:focus {
-        box-shadow: none;
-        border: none; }
+      color: #c53d13;
+      font-family: "Champagne", Helvetica, Arial, sans-serif;
+      font-size: 0.8em; }
+    div#locations-list-wrapper div#search-bar-wrapper input:hover, div#locations-list-wrapper div#search-bar-wrapper input:focus {
+      box-shadow: none;
+      border: none; }
 
 footer {
   box-shadow: 0px 0px 12px #160703;

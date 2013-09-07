@@ -56,6 +56,10 @@ $body-font: 'Champagne', Helvetica, Arial, sans-serif
 @mixin text-shadow($color)
     text-shadow: $color 0 -1px 0
 
+@mixin box-sizing
+    -webkit-box-sizing: border-box
+    -moz-box-sizing: border-box
+    box-sizing: border-box
 // Everything Else
 body
     background-color:  $orange
@@ -115,13 +119,13 @@ p
 //Google Map styling
 div 
     &#maincontent 
-        float: left
-        width: 100% 
-    
+        width: 95%
+        margin: 0 auto 
+
     &#map-canvas
         @include dark-shadow
         width: 100%
-        margin: 0 auto $space auto
+        margin: 0 auto 
         height: $map-height
         background-color: $brown
 
@@ -134,7 +138,7 @@ div
             margin: 0
 
 
-div#sidebar
+div#locations-list-wrapper
     width: 100%
     div#locations-list
         ul#locations
@@ -167,19 +171,24 @@ div#sidebar
                     color: $beige
     //List search input
     div#search-bar-wrapper
+        @include rounded-corners($space/2)
+        @include box-sizing
+        padding: $space/2
         width: 100%
+        margin: $space auto
+        background-color: $light-orange
+        -webkit-box-sizing: border-box
+        -moz-box-sizing: border-box
+        box-sizing: border-box
         input
             &#search-bar
-            font-family: $body-font
-            width: 100%
-            @include rounded-corners($space/2)
-            margin: 
-                bottom: $space 
-            padding: $space/2
-            font-size: 0.8em
-            border: none
-            background-color: $light-orange
-            color: $dark-orange
+                width: 100%
+                border: none
+                margin: 0 auto
+                background-color: $light-orange
+                color: $dark-orange
+                font-family: $body-font
+                font-size: 0.8em
 
             &:hover, &:focus
                 box-shadow: none
