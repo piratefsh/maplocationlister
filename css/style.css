@@ -106,8 +106,7 @@ div#locations-list-wrapper {
             font-style: italic;
             margin-bottom: 6px; }
       div#locations-list-wrapper div#locations-list ul#locations li.selected {
-        background-color: #b15c41;
-        color: #fee9c6; }
+        background-color: #c53d13; }
   div#locations-list-wrapper div#search-bar-wrapper {
     -moz-border-radius: 6px;
     -webkit-border-radius: 6px;

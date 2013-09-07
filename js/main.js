@@ -10,7 +10,9 @@ $(document).ready(function(){
     //################################################ INITIALIZERS ###################################################
     function initializeListScroller(){
         //Set plugin scrollbar
-        $(divWithLocationsListSelector).height('400px').mCustomScrollbar({theme: 'dark-thick'})
+        $(divWithLocationsListSelector).height('400px').mCustomScrollbar({
+            theme: 'dark-thick',
+        })
     }
 
     // Callback to initialize GMaps with geoXML3
