@@ -2,6 +2,7 @@
 $(document).ready(function(){
     //Google Maps
     var APIkey = "AIzaSyBSPJm_l1q0JWgK6ZhJNzjwmQ4-pFJxkzc"
+    // var kmlSrc = "http://cafehopkl.com/maplocationlister/js/chkl.kml"
     var kmlSrc = "js/chkl.kml"
     // var kmlSrc = "http://maps.google.com.my/maps/ms?ie=UTF8&authuser=0&msa=0&output=kml&msid=215254376920118074950.0004c7c0fe5b02177d447"
     
@@ -31,12 +32,21 @@ $(document).ready(function(){
     function listLocations(doc){
         globalDoc = doc
 
-        console.log(globalDoc)
         //Assume only one doc for now
-        //Assume placemarks and markers are synchronizes (it is for geoxml3)
+        //Assume placemarks and markers are synchronized (it is for geoxml3)
         var placemarks = doc[0].placemarks
         var markers = doc[0].markers
 
+
+        //Sort placemarks and markers
+        placemarks = placemarks.sort(function(a, b){
+            return (a.name).localeCompare(b.name)
+        })
+        markers = markers.sort(function(a, b){
+            return (a.title).localeCompare(b.title)
+        })
+
+        //Add location details to location ul
         var locationsList = $('ul#locations')
         for(var i = 0; i < placemarks.length; i++){
             //For each placemark, list title and description free of inline styling
@@ -44,14 +54,14 @@ $(document).ready(function(){
             var marker = markers[i]
 
             var markerID = makeID(marker.title)
-            console.log("Marker: " + markerID)
+            // console.log("Marker: " + markerID)
 
             var m = marker
 
             //Set marker to highlight each li onclick
             google.maps.event.addListener(m, 'click', function(){
                 var markerID = makeID(this.title)
-                
+
                 //Remove selector class from other li
                 $('ul#locations li').removeClass('selected')
 
@@ -62,12 +72,9 @@ $(document).ready(function(){
 
             //Remove inline styling from placemark description
             var cleanDescriptions = removeStyle($('<span class="loc-desc">' + placemark.description + '</span>'))
-            
             //Create li element with title and description as contents
             $(locationsList).append(
-                $('<li>').append($('<strong class="title">').append(placemark.name)).append(cleanDescriptions)
-                    .attr('id', markerID))
-
+                $('<li>').append($('<strong class="title">').attr('id', markerID).append(placemark.name)).append(cleanDescriptions))
         }
 
         setLocationListOnlick()
@@ -75,7 +82,7 @@ $(document).ready(function(){
 
     //Formats text to be suitable for id use
     function makeID(text){
-        return text.replace(/[,;\s()]/g, "-")
+        return text.replace(/[,;\s()\&]/g, "")
     }
 
     //Removes inline styling, breaks and non-breaking spaces, and removes <font> tags
@@ -104,19 +111,43 @@ $(document).ready(function(){
     // Make each location <li> clickable to pop up corresponding marker info window
     function setLocationListOnlick(){
         $("ul#locations li").click(function(e){
-            var markerTitle = $('.title', $(this)).html()
-
-            console.log("Finding marker for: " + markerTitle)
-
+            var markerTitle = $('.title', this).attr('id')
+            var currMarker 
             //Find corresponding marker
             for(var i = 0; i < globalDoc[0].markers.length; i++){
-                var currMarker = globalDoc[0].markers[i]
+                currMarker = globalDoc[0].markers[i]
 
                 //Open info window for corresponding marker    
-                if(currMarker.title == markerTitle){
+                if(makeID(currMarker.title) == markerTitle){
                     google.maps.event.trigger(currMarker, 'click')
+                    break
                 }
             }
+
+            var addressSpan = $("span.address", this)
+
+            //if span for address doesn't already exist
+            if(addressSpan == null || addressSpan.size() < 1){
+                var newSpan = $("<span>").attr('class', 'address')
+                $(this).append(newSpan)
+                addressSpan = $("span.address", this)
+
+            }
+
+            getAddress(currMarker.getPosition(), addressSpan)
+        })
+    }
+
+    //Use Geocoder to get address. takes in a LatLng object and JQuery object to append it to
+    function getAddress(latlng, resultContainer) {
+        var geocoder = new google.maps.Geocoder()
+        var geocoderRequest = {
+            location: latlng
+        }
+
+        geocoder.geocode(geocoderRequest, function(results, status){
+            $(resultContainer).html(results[0].formatted_address)
+
         })
     }
 
