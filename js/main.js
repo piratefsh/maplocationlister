@@ -272,7 +272,6 @@ $(document).ready(function(){
         descendents.removeAttr('style').removeAttr('dir')
         
         //Remove all <br>
-        $(element).find('br').replaceWith(null)
         $(element).find('b').replaceWith(null)
 
         //Remove all <font>

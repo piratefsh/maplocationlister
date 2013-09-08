@@ -68,10 +68,6 @@ div#map-canvas {
     padding: 0;
     margin: 0; }
 
-div.gw-style-iw div h1 {
-  font-family: "Champagne", Helvetica, Arial, sans-serif;
-  color: #91110e; }
-
 div#locations-list-wrapper {
   width: 100%; }
   div#locations-list-wrapper div#locations-list ul#locations {
