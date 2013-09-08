@@ -14,6 +14,7 @@ $(document).ready(function(){
     markerIcons['participating']   = chklBaseUrl + 'maplocationlister/img/map-icons/chkl-pin-03.png'
     markerIcons['default']         = chklBaseUrl + 'maplocationlister/img/map-icons/chkl-pin-02.png'
 
+    var globalInfoWindow = new google.maps.InfoWindow() //only want one custom infowindow open
     //################################################ INITIALIZERS ###################################################
     function initializeListScroller(){
         //Set plugin scrollbar
@@ -33,7 +34,6 @@ $(document).ready(function(){
         var kmlParser = new geoXML3.parser(
             {   map: gmap,
                 zoom: "false",
-                singleInfoWindow: true,
                 afterParse: parserCallback
             })  
 
@@ -84,11 +84,11 @@ $(document).ready(function(){
 
              //Remove inline styling from placemark description
             var cleanDescriptions = removeStyle($('<span class="loc-desc">' + placemark.description + '</span>'))
+
             //Create li element with title and description as contents
             
             var liElement = $('<li>').append($('<strong class="title">').attr('id', markerID).append(placemark.name)).append(cleanDescriptions).attr('id', markerID)
             $(locationsList).append(liElement)
-
 
             var m = marker
             
@@ -121,31 +121,28 @@ $(document).ready(function(){
             })
 
             //Set marker listener to highlight each li onclick
+            google.maps.event.clearListeners(m, 'click')
+
             google.maps.event.addListener(m, 'click', function(){
                 var markerID = makeID(this.title)
 
-                //Remove selector class from other li
-                var allLis = $('ul#locations li')
-                allLis.removeClass('selected')
-
-                //Add selector class to li
-                var thisLi = $('li#' + markerID)
-                thisLi.addClass('selected')
-
-                //Collapse all other location desc and only show desc for current li
-                collapseLocationListDesc()
-                showDetails(thisLi, this)
+                selectLocationLi(markerID, this)
 
                 //Zoom to location and center it
                 //have to set center first, for first time click otherwise it'll zoom in some random position even though getPosition() returns 
                 //correct latlng values. Some bug.
                 gmap.setCenter(this.getPosition())
                 gmap.setZoom(15)
-                gmap.setCenter(this.getPosition())
+                gmap.panTo(this.getPosition())
 
                 //Scroll to selected position
                 $(divWithLocationsListSelector).mCustomScrollbar("scrollTo", "li#" + markerID)
 
+                var thisPlacemark = getPlaceMarkForMarker(this)
+                 //Clean infowindow
+                globalInfoWindow.setContent("<h3>" + thisPlacemark.name + "</h3>" +  removeStyle($('<span class="loc-desc">' + thisPlacemark.description + '</span>')))
+
+                globalInfoWindow.open(gmap, this)
             })
         }
 
@@ -158,8 +155,36 @@ $(document).ready(function(){
 
 
     //####################################### MARKER/LOCATION LI ONLCLICK FUNCTIONS //#######################################
+    function getPlaceMarkForMarker(marker){
+        var placemark 
+
+        for(var i = 0; i < globalDoc[0].placemarks.length; i++){
+            var p = globalDoc[0].placemarks[i]
+
+            if(makeID(p.name) == makeID(marker.title)){
+                placemark = p
+            }
+        }
+
+        return placemark
+    }
 
      // Make each location <li> clickable to pop up corresponding marker info window
+    function selectLocationLi(markerID, marker){
+        //Remove selector class from other li
+        var allLis = $('ul#locations li')
+        allLis.removeClass('selected')
+
+        //Add selector class to li
+        var thisLi = $('li#' + markerID)
+        thisLi.addClass('selected')
+
+        //Collapse all other location desc and only show desc for current li
+        collapseLocationListDesc()
+        showDetails(thisLi, marker)
+
+    }
+
     function setLocationListOnlick(){
         $("ul#locations li").click(function(e){
             var markerTitle = $('.title', this).attr('id')
@@ -247,7 +272,8 @@ $(document).ready(function(){
         descendents.removeAttr('style').removeAttr('dir')
         
         //Remove all <br>
-        // $(element).find('br').replaceWith(null)
+        $(element).find('br').replaceWith(null)
+        $(element).find('b').replaceWith(null)
 
         //Remove all <font>
         $(element).find('font').replaceWith(replaceElementTagWithSpan)
